@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>360&deg; Image</title>
+    <meta name="description" content="360&deg; Image - A-Frame">
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script type="text/javascript" src="/jquery.min.js"></script>
+    <script type="text/javascript" src="/qrcode.js"></script>
+    <script src="/resources.js"></script>
+    <script src="/look.js"></script>
+    <script src="/renderer.js"></script>
+    <script src="/frame-manager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.0/dialog-polyfill.js"></script>
+    <script src="/menu.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.0/dialog-polyfill.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.red-deep_purple.min.css" /> 
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script> 
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  </head>
+  <body style="user-select: none;">
+    <div style="position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 1339;
+                overflow: hidden;
+                padding: 1em 1em 1em 1em;
+                background-color: #303030;
+                margin: 0px 0px 0px 0px;
+                right: 0;
+                bottom: 0;" id="cover">
+      <h2 class="mdl-card__title-text"
+          style="color: white; text-shadow: 0 0 0.1em #000000;
+                 position:absolute;
+                 left: 50%; top: 50%;
+                 transform: translate(-50%, -50%);">
+        Loading...
+      </h2>
+    </div>
+    <!--Frame-->
+    <div style="position: fixed;
+                left: 0;
+                top: 0;
+                z-index: 1338;
+                overflow: hidden;
+                padding: 1em 1em 1em 1em;">
+      <h2 class="mdl-card__title-text"
+          style="color: white; text-shadow: 0 0 0.1em #000000">
+        Frame: <span id="frame-number">1</span>
+      </h2>
+    </div>
+    
+    <!--Side-Navigation Menu-->
+    <div style="position: fixed;
+                right: 0;
+                z-index: 1337;
+                height: 90%;
+                overflow: hidden;
+                overflow-y: scroll;
+                ">
+      
+      <div style="padding: 1em 1em 1em 1em;">
+        <!--Modes-->
+        <p style="font-size:.7em;color:#7d4eff;background-color:#fff;text-align:center;padding:1px;border-radius:5px;">
+          Modes
+        </p>
+        <button id="edit-mode" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Sketch Mode">
+          <i class="material-icons">edit</i>
+        </button>
+        <br><br>
+        <button id="move-mode" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Move Mode">
+          <i class="material-icons">open_with</i>
+        </button>
+        <br><br>
+
+         <!--Actions - Frame-Lvl-->
+        <p style="font-size:.7em;color:#7d4eff;background-color:#fff;text-align:center;border-radius:5px;padding:1px;">
+          Frame 
+        </p>
+        <button id="image-mode" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Add Images">
+          <i class="material-icons" id="image-mode-icon">add_photo_alternate</i>
+        </button>
+        <br><br>
+        <button id="text-mode" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Add Text">
+          <i class="material-icons">text_fields</i>
+        </button>
+        <br><br>
+         <button id="new-portal" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Add Hotspot">
+          <i class="material-icons">select_all</i>
+        </button>
+        <br><br>
+      
+        
+         <!--Actions - High-Lvl-->
+        <p style="font-size:.7em;color:#7d4eff;background-color:#fff;text-align:center;border-radius:5px;padding:1px;">
+          Scene 
+        </p>
+        <button id="new-frame" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="New Scene">
+          <i class="material-icons">add</i>
+        </button>
+        <br><br>
+        <button id="delete-frame" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Delete Scene">
+          <i class="material-icons">delete</i>
+        </button>
+        <br><br>
+        <button id="frames" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="View All Scenes">
+          <i class="material-icons">sort</i>
+        </button>
+        <br><br>
+        
+        <!--Import/Export-->
+        <p style="font-size:.6em;color:#7d4eff;background-color:#fff;text-align:center;border-radius:5px;padding:1px;">
+         Import/Export 
+        </p>
+         <button id="image-open" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Upload 2D Images">
+          <i class="material-icons">folder_open</i>
+        </button>
+        <br><br>
+        <button id="360-open" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Upload 360 BG">
+          <i class="material-icons">360</i>
+        </button>
+        <br><br>
+        <button id="export" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" title="Export">
+          <i class="material-icons">share</i>
+        </button>
+        <br><br>
+      
+      </div>
+      
+    </div>
+    <dialog class="mdl-dialog" id="modal" style="z-index: 9001 !important;">
+      <div class="mdl-dialog__content">
+        <p id="modal-text"></p>
+        <center><p id="qr-code"></p></center>
+      </div>
+      <div class="mdl-dialog__actions mdl-dialog__actions--full-width"
+           id="modal-buttons">
+      </div>
+    </dialog>
+    <a-scene>
+      <a-entity frame-manager></a-entity>
+      <a-entity renderer="strokeColor: rgb(113, 103, 248)"
+                id="renderer"></a-entity>
+      <a-entity camera mylookcontrols id="camera">
+        <a-entity animation__click="property: scale; startEvents: click; easing: easeInCubic; dur: 150; from: 0.1 0.1 0.1; to: 1 1 1"
+                  animation__fusing="property: scale; startEvents: fusing; easing: easeInCubic; dur: 1500; from: 1 1 1; to: 0.1 0.1 0.1"
+                  animation__mouseleave="property: scale; startEvents: mouseleave; easing: easeInCubic; dur: 500; to: 1 1 1"
+                  cursor="fuse: true;"
+                  position="0 0 -1"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: rgb(113, 103, 248); shader: flat"
+                  id="cursor"></a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Add Images</title>
+    <meta name="description" content="360&deg; Image - A-Frame">
+    <script src="https://aframe.io/releases/1.0.3/aframe.min.js"></script>
+    <script src="look.js"></script>
+    <script src="renderer.js"></script>
+    <script>
+      document.querySelector('a-sky').addEventListener('click', function (evt) {
+        console.log('click');
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+          <canvas id="canvas"></canvas>
+      </a-assets>
+      <a-entity camera mylook-controls renderer>
+      <a-cursor id="cursor"></a-cursor>
+      </a-entity>
+      <a-sky id="sky" src="https://cdn.glitch.com/dff38557-346e-4aa3-94d5-969225a03cf0%2Fpuydesancy.jpg"></a-sky>
+      <a-sphere id="canvas-360" material="side: back; transparent: true; alphaTest: 0.5" src="#canvas"></a-sphere>
+      <a-text font="kelsonsans" value="Hiya" width="6" position="-2.5 0.25 -1.5"
+              rotation="0 15 0"></a-text>
+    </a-scene>
+  </body>
+</html>

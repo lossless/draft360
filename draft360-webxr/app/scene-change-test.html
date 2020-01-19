@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mouse Click Example - A-Frame</title>
+    <meta name="description" content="Mouse Click Example - A-Frame" />
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <!--
+    The event-set component gives you a quick way to add events
+    to elements (like click, mouseenter, mouseleave, mousedown, mouseup, and fusing)
+    without having to write Javascript for each event.
+    
+    For exmample if you want to give the user feedback when they hover over the element,
+    you can do event-set__enter="_event: mouseenter; material.color: blue"
+    -->
+    <script src="https://unpkg.com/aframe-event-set-component@^4.0.0/dist/aframe-event-set-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- 
+           The camera has a cursor component,
+           which uses the mouse as the rayOrigin,
+           so that you can click entities in the scene
+           with the mouse.
+      -->
+      <a-entity
+        id="camera"
+        camera="userHeight: 1.6"
+        look-controls
+        cursor="rayOrigin: mouse"
+      ></a-entity>
+
+      <a-entity id="scene1">
+        <a-sky
+          src="https://cdn.glitch.com/59fdd211-cdef-4d16-a5cd-d5c217845b69%2FCanntrsutRecVR_LivingRoom360Base_00.png?v=1571600786671"
+          color="red"
+        ></a-sky>
+        <a-sphere
+          cursor-listener
+          position="-13 7 -10"
+          radius="4"
+          color="red"
+          onclick="setScene2()"
+        ></a-sphere>
+        <!--        <a-plane src="#ground" height="100" width="100" rotation="-90 0 0"></a-plane> -->
+      </a-entity>
+
+      <a-entity id="scene2" visible="false">
+        <a-sky
+          src="https://cdn.glitch.com/59fdd211-cdef-4d16-a5cd-d5c217845b69%2FCanntrsutRecVR_LivingRoom360FlixNChill_00.png?v=1571600782485"
+          color="yellow"
+        ></a-sky>
+        <a-sphere
+          cursor-listener
+          position="-13 0 -10"
+          radius="5"
+          color="yellow"
+          onclick="setScene3()"
+        >
+        </a-sphere>
+        <!--        <a-plane src="#ground" height="100" width="100" rotation="-90 0 0"></a-plane> -->
+      </a-entity>
+
+      <a-entity id="scene3" visible="false">
+        <a-sky
+          src="https://cdn.glitch.com/59fdd211-cdef-4d16-a5cd-d5c217845b69%2FCanntrsutRecVR_LivingRoom360Base_00.png?v=1571600786671"
+          rotation="0 0 0"
+          color="green"
+        ></a-sky>
+        <!--          <a-sky src="#" color="yellow"></a-sky> -->
+        <a-sphere
+          cursor-listener
+          position="5 3 -5"
+          radius="4"
+          color="green"
+          onclick="setScene1()"
+        >
+        </a-sphere>
+        <!--        <a-plane src="#ground" height="100" width="100" rotation="-90 0 0"></a-plane> -->
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
